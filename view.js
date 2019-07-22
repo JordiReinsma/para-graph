@@ -53,6 +53,8 @@ function renderGraph(graph) {
 
     // Visualisation
 
+    d3.select('#viz *').remove();
+
     const svg = d3
         .select('#viz')
         .attr('width', width)
