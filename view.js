@@ -1,29 +1,28 @@
+// view.js
+// Visualização do modelo extraído do site
+// Apresentado como uma relação de sinônimos
+
 const messageBox = document.querySelector('#messageBox');
 
-function fixna(x) {
-    if (isFinite(x)) return x;
-    return 0;
-}
-
+// Adiciona rótulo no vértice se for uma palavra
 function createLabel(d, i) {
-
     if (i % 2 == 0) {
         return '';
     }
-
     const id = d.node.id;
     if (isNaN(id)) {
         return id;
     }
-
     return '';
 }
 
+// Desenha o grafo no svg da pagina
 function renderGraph(graph) {
     d3.select('#viz *').remove();
     messageBox.innerText = '';
 
-    if (graph.nodes.length === 1) {
+    // Palavra não existe na base de dados
+    if (graph.nodes.length <== 1) {
         messageBox.innerText = `Palavra não encontrada: ${ graph.nodes[0].id }`;
         return; 
     }
@@ -32,7 +31,7 @@ function renderGraph(graph) {
     const height = document.body.clientHeight;
     const color = d3.scaleOrdinal(d3.schemeCategory10);
 
-    // Dados
+    // Dados do grafo
 
     const label = {
         'nodes': [],
@@ -61,7 +60,7 @@ function renderGraph(graph) {
         .force('charge', d3.forceManyBody().strength(-50))
         .force('link', d3.forceLink(label.links).distance(0).strength(2));
 
-    // Visualisation
+    // Visualização e inicialização
 
     const svg = d3
         .select('#viz')
@@ -70,20 +69,12 @@ function renderGraph(graph) {
 
     const container = svg.append('g');
 
-    const node = container.append('g').attr('class', 'nodes')
-        .selectAll('g')
-        .data(graph.nodes)
-        .enter()
-        .append('circle')
-        .attr('r', (d, i) => isNaN(d.id) && i > 0 ? 5 : 10)
-        .attr('fill', (d) => isNaN(d.id) ? '#555' : color(d.group));
-
     const link = container.append('g').attr('class', 'links')
         .selectAll('line')
         .data(graph.links)
         .enter()
         .append('line')
-        .attr('stroke', '#aaa')
+        .attr('stroke', '#fff')
         .attr('stroke-width', '1px');
 
     const labelNode = container.append('g').attr('class', 'labelNodes')
@@ -92,12 +83,25 @@ function renderGraph(graph) {
         .enter()
         .append('text')
         .text(createLabel)
-        .style('fill', '#333')
+        .style('fill', '#222')
         .style('font-family', 'Arial')
-        .style('font-size', (d, i) => i > 1 ? '12px' : '18px')
+        .style('font-size', (d, i) => i > 1 ? '12px' : '20px')
         .style('pointer-events', 'none'); // to prevent mouseover/drag capture
 
-    //
+    const node = container.append('g').attr('class', 'nodes')
+        .selectAll('g')
+        .data(graph.nodes)
+        .enter()
+        .append('circle')
+        .attr('r', (d, i) => isNaN(d.id) && i > 0 ? 6 : 12)
+        .attr('fill', (d) => isNaN(d.id) ? '#111' : color(d.group));
+
+    // Atualização
+
+    function fixna(x) {
+        if (isFinite(x)) return x;
+        return 0;
+    }
 
     function updateNode(node) {
         node.attr('transform', (d) => {
@@ -113,7 +117,6 @@ function renderGraph(graph) {
     }
 
     function ticked() {
-
         node.call(updateNode);
         link.call(updateLink);
 
@@ -131,13 +134,19 @@ function renderGraph(graph) {
 
     }
 
-    graphLayout.on('tick', ticked);
+    // Tentativa fracassada de poder clicar nas palavras
+    
+    // function clicked() {
+    //     word = d3.select(this).innerText;
+    //     console.log(word);
+    // }
 
-    // Initialização
+    graphLayout.on('tick', ticked);
+    // labelNode.on('click', clicked);
 
     svg.call(
         d3.zoom()
-            .scaleExtent([.1, 4])
+            .scaleExtent([.5, 4])
             .on('zoom', () => container.attr('transform', d3.event.transform))
     );
 }
