@@ -123,17 +123,8 @@ function renderGraph(graph) {
                 d.x = d.node.x;
                 d.y = d.node.y;
             } else {
-                const b = this.getBBox();
-
-                const diffX = d.x - d.node.x;
-                const diffY = d.y - d.node.y;
-
-                const dist = Math.sqrt(diffX * diffX + diffY * diffY);
-
-                let shiftX = b.width * (diffX - dist) / (dist * 2);
-                shiftX = Math.max(-b.width, Math.min(0, shiftX));
-                const shiftY = 5;
-                this.setAttribute('transform', 'translate(' + shiftX + ',' + shiftY + ')');
+                d.x = d.node.x;
+                d.y = d.node.y + (d.index > 1 ? 16 : 28);
             }
         });
         labelNode.call(updateNode);
