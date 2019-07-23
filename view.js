@@ -22,7 +22,7 @@ function renderGraph(graph) {
     messageBox.innerText = '';
 
     // Palavra não existe na base de dados
-    if (graph.nodes.length <== 1) {
+    if (graph.nodes.length === 1) {
         messageBox.innerText = `Palavra não encontrada: ${ graph.nodes[0].id }`;
         return; 
     }
