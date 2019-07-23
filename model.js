@@ -9,7 +9,7 @@ function updateModel(word, data) {
 function fetchData(word) {
 	const xhr = new XMLHttpRequest();
 	xhr.responseType = 'document';
-	const url = PROXY + SERVICE + word;
+	const url = PROXY + SERVICE + word.replace(' ', '_');
 	xhr.open('GET', url);
 	xhr.onload = (event) => {
 		const data = scrape(event);

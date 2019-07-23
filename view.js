@@ -1,3 +1,5 @@
+const messageBox = document.querySelector('#messageBox');
+
 function fixna(x) {
     if (isFinite(x)) return x;
     return 0;
@@ -18,6 +20,14 @@ function createLabel(d, i) {
 }
 
 function renderGraph(graph) {
+    d3.select('#viz *').remove();
+    messageBox.innerText = '';
+
+    if (graph.nodes.length === 1) {
+        messageBox.innerText = `Palavra não encontrada: ${ graph.nodes[0].id }`;
+        return; 
+    }
+
     const width = document.body.clientWidth;
     const height = document.body.clientHeight;
     const color = d3.scaleOrdinal(d3.schemeCategory10);
@@ -52,8 +62,6 @@ function renderGraph(graph) {
         .force('link', d3.forceLink(label.links).distance(0).strength(2));
 
     // Visualisation
-
-    d3.select('#viz *').remove();
 
     const svg = d3
         .select('#viz')
