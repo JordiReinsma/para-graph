@@ -1,4 +1,47 @@
+* {
+	box-sizing: border-box;
+	font-family: sans-serif;
+}
 html, body, svg {
-	height: 100%;
+	margin: auto;
+	height: 95%;
 	width: 100%;
+}
+body {
+	background-color: lightblue;
+}
+svg {
+	border: 1px solid grey;
+}
+div.searchBar {
+	margin: auto;
+	max-width: 30%;
+}
+div.searchBar input {
+	float: left;
+	width: 70%;
+	padding: 8px;
+	background: #eee;
+	border: 1px solid grey;
+}
+div.searchBar button {
+	float: left;
+	width: 30%;
+	padding: 8px;
+	background: #2ae;
+	color: white;
+	border: 1px solid grey;
+	border-left: none;
+	cursor: pointer; 
+}
+div.searchBar button:hover {
+	background: #08d;
+}
+div.searchBar::after {
+	content: '';
+	clear: both;
+	display: table;
+}
+span#messageBox {
+	font-size: 12px;
 }
